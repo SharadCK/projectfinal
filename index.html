@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang ="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+    <title>Movie List Creator</title>
+    <link rel="icon" href="assets/images/oceanic.png">
+
+    <! jQuery link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+	<! Add reset link>
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+
+    <! Add bootstrap link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <! Add stylesheet link>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<! Add Firebase Reference>
+    <script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+
+    <!-- Link to Moment.js should go here -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet">
+
+</head>
+
+<body>
+	<div id="player">
+		<audio autoplay hidden>
+			<source src="assets/thx-soundtest.wav" type="audio/wav">
+		</audio>
+	</div>
+
+
+	
+	
+	<h1>Movie List Maker</h1>
+	<h2>Create a Movie List -- See Clips -- Read Plot Summaries</h2>
+	<br>
+
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Search Movies</h3>
+					</div>
+					<div class="panel-body">
+						<form role="form">
+							<div>
+								<br>
+								<div style="text-align: center">
+								<label for="text">TYPE MOVIE TITLES BELOW</label>
+								<input type="text" class="form-control" id="user-input-name" placeholder="Type Movie Title Here" autocomplete="off">
+								<br>
+								<button type="submit" class="btn btn-primary" id="user-add-movie">Add Movies to Your List</button>
+								<button type="submit" class="btn btn-success" id="user-search-plot">Read Movie Plots</button>
+								<button type="submit" class="btn btn-danger" id="user-clear">Clear Search Box</button>
+								</div>
+								<br><br><br>								
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">My Movie List</h3>
+					</div>
+					<div class="panel-body">
+						<table id="my-movie-list">
+							<tr>
+								<th class="col-xs-12"></th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<h1 class="w100 text-center"><a href="index.html">Movie Search</a></h1>
+    
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form action="#">
+                    <p><input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" /></p>
+                    <p><input type="submit" value="Search" class="form-control btn btn-primary w100"></p>
+                </form>
+                <div id="results">
+                     <div style="text-align: center">
+                     <iframe class="video w100" width="640" height="360" src="https://www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+	<!-- scripts -->
+	<script type="text/javascript" src="assets/javascript/auth.js"></script>
+	<script type="text/javascript" src="assets/javascript/app.js"></script>
+	<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+
+</body>
+</html>
