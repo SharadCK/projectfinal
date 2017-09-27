@@ -1,3 +1,103 @@
+// -------------------------------------contributed by Sharad---------------------------------------------------------------------------------------
+  
+var movies = [];
+
+      // this function re-renders the HTML to display the appropriate content
+      function showMovieInfo() {
+
+        var movie = $(this).attr("data-name");
+        var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=40e9cece";
+      
+        // Creating an AJAX call for the specific movie button 
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+
+          //  div to hold the movie
+          var movieDiv = $("<div class='movie'>");
+          // Storing the rating data
+          var rating = response.Rated;
+
+          // Creating an element to have the rating displayed
+          var rMov = $("<p>").text("Rating: " + rating);
+
+          // Displaying the rating
+          movieDiv.append(rMov);
+          
+          // Storing the release year
+          var released = response.Released;
+
+          // Creating an element to hold the release year
+          var yMov = $("<p>").text("Released: " + released);
+
+          movieDiv.append(yMov);
+
+          // Storing the plot
+          var plot = response.Plot;
+
+          // Creating an element to hold the plot
+          var pMov = $("<p>").text("Plot: " + plot);
+
+          // Appending the plot
+          movieDiv.append(pMov);
+
+          // Retrieving the URL for the image
+          var imgURL = response.Poster;
+
+          // Creating an element to hold the image
+          var image = $("<img>").attr("src", imgURL);
+
+          // Appending the image
+          movieDiv.append(image);
+
+          // Putting the entire movie above the previous movies
+          $("#movies-view").prepend(movieDiv);
+        });
+
+      }
+
+      // Function for displaying movie data
+      function renderButtons() {
+
+        // Deleting the movies prior to adding new movies
+       
+        $("#buttons-view").empty();
+
+      //   
+        for (var i = 0; i < movies.length; i++) {
+
+          var a = $("<button>");
+          // Adding a class of movie to our button
+          a.addClass("movie");
+          // Adding a data-attribute
+          a.attr("data-name", movies[i]);
+          // Providing the initial button text
+          a.text(movies[i]);
+          // Adding the button to the buttons-view div
+          $("#buttons-view").append(a);
+        }
+      }
+
+      // event handler where a movie button is clicked
+      $("#user-add-movie").on("click", function(event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var movie = $("#user-input-name").val().trim();
+        movies.push(movie);
+        renderButtons();
+      });
+
+      // Adding a click event listener to all elements with a class of "movie"
+      $(document).on("click", ".movie", showMovieInfo);
+
+      renderButtons();
+
+// --------------------------------------------------end-------------------------------------------------------------------------
+
+
+
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyAuYrWqniGIviMM1LsufSjFkuh6PSBGUh0",
