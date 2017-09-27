@@ -1,4 +1,110 @@
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyAuYrWqniGIviMM1LsufSjFkuh6PSBGUh0",
+    authDomain: "movies-d6628.firebaseapp.com",
+    databaseURL: "https://movies-d6628.firebaseio.com",
+    projectId: "movies-d6628",
+    Bucket: "movies-d6628.appspot.com",
+    messagingSenderId: "959648926177"
+};
 
+
+// Name a Variable to Reference the Database
+firebase.initializeApp(config);
+var database = firebase.database();
+
+
+// Database Directory
+var movieRef = database.ref("/movies");
+
+
+// Create Variables
+var name = null;
+
+
+// Clear Input Box
+$("#user-clear").on("click", function() {
+     event.preventDefault();
+     $("#user-input-name").val(null);
+});
+
+
+// Listen for Button Click to Create Movie List
+$("#user-add-movie").on("click", function() {
+    event.preventDefault();
+    var nameOfMovie = $("#user-input-name").val().trim();
+
+    if (nameOfMovie === "") {
+        return;
+    } else {
+        console.log(nameOfMovie);
+        var newMovie = {
+            name: nameOfMovie
+        }
+
+        // Save to Firebase
+        database.ref("/movies").push(newMovie);
+
+        // Make Input Boxes Blank After Firebase Push
+        $("#user-input-name").val(null);
+    }
+});
+
+// Add New Movie to Firebase
+database.ref("/movies").on("child_added", function(x) {
+
+    // Store everything into a variable.
+    var nameOfMovie = x.val().name;
+
+    // Add New Movie to Table
+    $("#my-movie-list").append("<tr><td>" + nameOfMovie + "</td><td>" + "</td><td class='col-xs-1'>" + "<input type='submit' value='X' class='remove-movie' btn btn-primary btn-sm'>" + "<td><br><br></td>" + "</tr>");
+
+    $("body").on("click", ".remove-movie", function() {
+        $(this).closest('tr').remove();
+        movieRef.remove();
+    });
+});
+
+
+// Listen for Button Click to Read Movie Summary
+$("#user-search-plot").on("click", function() {
+    event.preventDefault();
+    var nameOfMoviePlot = $("#user-input-name").val().trim();
+
+    if (nameOfMoviePlot === "") {
+        return;
+    } else {
+        console.log(nameOfMoviePlot);
+
+        var queryURL = "https://www.omdbapi.com/?t=" + nameOfMoviePlot + "&y=&plot=short&apikey=40e9cece";
+
+        // Creating an AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+
+          // Storing the plot
+          var plot = response.Plot;
+
+          // Creating an element to hold the plot
+          var pThree = $("<p>").text("Plot: " + plot);
+
+          if (plot === undefined) {
+            plot = "Error - unable to locate this movie summary";
+          }
+          
+          console.log(plot);    
+          $("#my-movie-summary").append(nameOfMoviePlot + "<br>" + plot + "<br><br>");
+
+        });
+
+        $("#user-input-name").val(null);
+    }
+});
+
+
+// Listen for Button Click to Clear Input Box
 $("#user-clear").on("click", function() {
      event.preventDefault();
      $("#user-input-name").val(null);
@@ -6,6 +112,7 @@ $("#user-clear").on("click", function() {
 });
 
 
+// Listen for Button Click to Play Video
 function createYouTubeEmbedLink (link) {
     link = document.getElementById('link').value;
     if (link.charAt(12) == 'y') {    //if the 13th character = y (youtube  videos)
@@ -21,15 +128,9 @@ function createYouTubeEmbedLink (link) {
     else {}
 }
 
-
-
-
-
-
 function handleAPILoaded() {
   console.log('youtube api ready');
 }
-
 
 function tplawesome(e,t){res=e;for(var n=0;n<t.length;n++){res=res.replace(/\{\{(.*?)\}\}/g,function(e,r){return t[n][r]})}return res}
 
@@ -72,96 +173,3 @@ function init() {
         // yt api is ready
     });
 }
-
-
-
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyAuYrWqniGIviMM1LsufSjFkuh6PSBGUh0",
-    authDomain: "movies-d6628.firebaseapp.com",
-    databaseURL: "https://movies-d6628.firebaseio.com",
-    projectId: "movies-d6628",
-    Bucket: "movies-d6628.appspot.com",
-    messagingSenderId: "959648926177"
-};
-
-firebase.initializeApp(config);
-
-// Name a Variable to Reference the Database
-var database = firebase.database();
-
-// Database Directory
-var movieRef = database.ref("/movies");
-
-// Create Variables
-var name = null;
-
-// Listen for First Button Click
-$("#user-add-movie").on("click", function() {
-    event.preventDefault();
-    var nameOfMovie = $("#user-input-name").val().trim();
-
-    if (nameOfMovie === "") {
-        return;
-    } else {
-        console.log(nameOfMovie);
-        var newMovie = {
-            name: nameOfMovie
-        }
-
-        // Save to Firebase
-        database.ref("/movies").push(newMovie);
-
-        // Make Input Boxes Blank After Firebase Push
-        $("#user-input-name").val(null);
-    }
-});
-
-// Add New Movie to Firebase
-database.ref("/movies").on("child_added", function(x) {
-
-    // Store everything into a variable.
-    var nameOfMovie = x.val().name;
-
-    // Add New Movie to Table
-    $("#my-movie-list").append("<tr><td>" + nameOfMovie + "</td><td>" + "</td><td class='col-xs-1'>" + "<input type='submit' value='X' class='remove-movie' btn btn-primary btn-sm'>" + "<td><br><br></td>" + "</tr>");
-
-    $("body").on("click", ".remove-movie", function() {
-        $(this).closest('tr').remove();
-        movieRef.remove();
-    });
-});
-
-
-
-// Listen for Second Button Click ************************API BY SHARAD HERE
-
-$("#user-search-plot").on("click", function() {
-    event.preventDefault();
-    var nameOfMoviePlot = $("#user-input-name").val().trim();
-    if (nameOfMoviePlot === "") {
-        return;
-    } else {
-        console.log(nameOfMoviePlot);
-        var queryURL = "http://www.omdbapi.com/?t=" + nameOfMoviePlot + "&y=&plot=short&apikey=40e9cece";
-        // Creating an AJAX call for the specific movie button being clicked
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        }).done(function(response) {    
-         // Storing the plot
-          var plot = response.Plot;
-          // Creating an element to hold the plot
-          var pThree = $("<p>").text("Plot: " + plot);
-          console.log(plot);    
-       });
-        $("#user-input-name").val(null);
-    }
-});
-
-
-$("#user-clear").on("click", function() {
-     event.preventDefault();
-     $("#user-input-name").val(null);
-
-});
